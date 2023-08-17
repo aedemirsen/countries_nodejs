@@ -6,9 +6,21 @@ const fs = require('fs'); // Dosya işlemleri için 'fs' modülünü ekliyoruz
 
 const dataPath = './countries.json'; // JSON dosyasının yolu
 
-
+const cors = require('cors');
+app.use(cors());
 
 const data = Object.values(JSON.parse(fs.readFileSync(dataPath)));
+
+const allowedOrigins = ['http://localhost:3000'];
+app.use(cors({
+  origin: (origin, callback) => {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Bu alan adına izin verilmiyor'));
+    }
+  },
+}));
 
 
 
